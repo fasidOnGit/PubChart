@@ -8,7 +8,7 @@ This project is developed on Angular(v5). It basically query EuropePMC with the 
 
 ## Getting Started
 
-You can clone this project into your local and follow the instructions or visit the instance for a quick [demo] (http://europepmc.herokuapp.com)
+You can clone this project into your local and follow the instructions or visit the instance for a quick [demo](http://europepmc.herokuapp.com)
 ### Prerequisites
 You should have the latest stable version of Node installed (anything above v6.11 should be fine.).
 
