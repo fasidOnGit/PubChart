@@ -31,7 +31,7 @@ app.use(express.static(__dirname + '/dist'));
 
 app.get('/*', function(req, res) {
 	console.log(__dirname)
-  res.sendFile(path.join(__dirname + '/index.html'));
+  res.sendFile(path.join(__dirname + '/src/index.html'));
 });
 
 // Start the app by listening on the default
