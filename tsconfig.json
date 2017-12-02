@@ -11,7 +11,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "types": [ "firebase" ],
+    "types": [ "highcharts" ],
     
     "lib": [
       "es2017",
