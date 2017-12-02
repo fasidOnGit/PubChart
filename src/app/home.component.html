@@ -1,31 +1,16 @@
-<!-- <input (keyup)="searchTerms.next($event.target.value)"/> -->
-
-<!-- <ul *ngIf="results">
-	<li *ngFor="let result of results.resultList.result">
-		<mat-list>
-		 <mat-list-item> {{result.title}} 
-		 </mat-list-item>
-		 <mat-list-item> {{result.pubYear}} 
-		 </mat-list-item>
-		</mat-list>
-
-	</li>
-</ul> -->
 <div class="example-container">
   <mat-form-field [hideRequiredMarker]="false">
     <input  matInput placeholder="Search.." required [(ngModel)]="query.search">
   </mat-form-field>
   <div>
     <mat-form-field>
-	  <input matInput [matDatepicker]="from"  [(ngModel)]="query.from" [max]="query.to" placeholder="Choose a from date">
-	  <!-- <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Choose a date"> -->
+	  <input matInput [matDatepicker]="from"  [(ngModel)]="query.from" [max]="query.to" placeholder="Choose a FROM date">
 	  <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
 	  <mat-datepicker #from></mat-datepicker>
 	  
 	</mat-form-field>
 	 <mat-form-field>
-	  <input matInput [matDatepicker]="to" [(ngModel)]="query.to" [min]="query.from" placeholder="Choose a to date">
-	  <!-- <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Choose a date"> -->
+	  <input matInput [matDatepicker]="to" [(ngModel)]="query.to" [min]="query.from" placeholder="Choose a TO date">
 	  <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
 	  <mat-datepicker #to></mat-datepicker>
 	  
@@ -34,5 +19,7 @@
 			<button (click)="post()" mat-button color="primary">SEARCH</button>
 </div>
 
-<div id="container" style="width:100%; height:400px;"></div>
-<div [chart]="chart"></div>
+<div id="high-container">
+	<mat-spinner *ngIf="loading"></mat-spinner>
+	<div id="container" style="width:100%; height:400px;"></div>
+</div>
