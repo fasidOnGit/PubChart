@@ -96,7 +96,7 @@ module.exports = {
       "./src\\polyfills.ts"
     ],
     "styles": [
-      "./src\\styles.css"
+      "/styles.css"
     ]
   },
   "output": {
@@ -185,7 +185,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "/styles.css")
         ],
         "test": /\.less$/,
         "use": [
@@ -302,7 +302,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "/styles.css")
         ],
         "test": /\.less$/,
         "use": [
