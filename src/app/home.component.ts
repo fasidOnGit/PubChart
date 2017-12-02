@@ -32,7 +32,7 @@ export class HomeComponent {
 		this.query.from = (this.query.from) ? this.query.from : new Date('1970-01-01');
 		this.query.to = (this.query.to) ? this.query.to : new Date();
 		if(this.query.from.getFullYear() == this.query.to.getFullYear()){
-			this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:[${this.query.from.yyyymmdd()} TO ${this.query.to.yyyymmdd()}])`)
+			this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:[${yyyymmdd(this.query.from)} TO ${yyyymmdd(this.query.to)}])`)
 				.subscribe(results => {
 					console.log(results)
 					hitCount.push(results.hitCount);
@@ -47,8 +47,8 @@ export class HomeComponent {
 			} else {
 				var topRangeEnd = new Date(`${this.query.from.getFullYear()}-12-31`);
 				var botRangeStart = new Date(`${this.query.to.getFullYear()}-01-01`);
-				var topRange = `[${this.query.from.yyyymmdd()} TO ${this.query.from.getFullYear()}-12-31]`;
-				var botRange = `[${this.query.to.getFullYear()}-01-01 TO ${this.query.to.yyyymmdd()}]`;
+				var topRange = `[${yyyymmdd(this.query.from)} TO ${this.query.from.getFullYear()}-12-31]`;
+				var botRange = `[${this.query.to.getFullYear()}-01-01 TO ${yyyymmdd(this.query.to)}]`;
 				this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:${topRange})`)
 					.subscribe(resultsTop => {
 						if(resultsTop.hitCount !=0) {
@@ -140,24 +140,43 @@ function getHistogram(data){
 });
 }
 
-//Replicating toISOString()
-Date.prototype.yyyymmdd = function() {
-  var mm = this.getMonth() + 1; // getMonth() is zero-based
-  var dd = this.getDate();
-
-  return [this.getFullYear(),
-          (mm>9 ? '' : '0') + mm,
-          (dd>9 ? '' : '0') + dd
-         ].join('-');
-};
-class Date extends Date {
-    get yyyymmdd(): Date {
-        var mm = this.getMonth() + 1; // getMonth() is zero-based
-  		var dd = this.getDate();
-
-	  return [this.getFullYear(),
-	          (mm>9 ? '' : '0') + mm,
-	          (dd>9 ? '' : '0') + dd
-	         ].join('-');
-	    }
+function yyyymmdd(date) {
+	return date.toISOString().substring(0, 10);
 }
+// //Replicating toISOString()
+// interface Date {
+//     yyyymmdd: Date;
+// }
+// Date.yyyymmdd  = function() {
+//   var mm = this.getMonth() + 1; // getMonth() is zero-based
+//   var dd = this.getDate();
+// var ret : Date;
+// ret = [this.getFullYear(),
+//           (mm>9 ? '' : '0') + mm,
+//           (dd>9 ? '' : '0') + dd
+//          ].join('-')
+//   return  ret;
+// };
+// declare var Date: {
+//     new (): Date;
+//     new (value: number): Date;
+//     new (value: string): Date;
+//     new (year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): Date;
+//     (): string;
+//     prototype: Date;
+//     parse(s: string): number;
+//     UTC(year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+//     now(): number;
+//     yyyymmdd: Date;
+// }
+// class MyDate extends Date {
+//     get yyyymmdd(): Date {
+//         var mm = this.getMonth() + 1; // getMonth() is zero-based
+//   		var dd = this.getDate();
+
+// 	  return [this.getFullYear(),
+// 	          (mm>9 ? '' : '0') + mm,
+// 	          (dd>9 ? '' : '0') + dd
+// 	         ].join('-');
+// 	    }
+// }
