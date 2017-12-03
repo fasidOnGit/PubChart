@@ -47,6 +47,7 @@ This repo is deployed on Heroku. You can go ahead and deploy it on any cloud str
 ### Future Implementation
    * Integrate Django's Panda to manipulate the data and get the work done by one API call.
    * Make some real UI enhancement as this app mainly focuses on functionality.
+   * Implement a progress bar instead of spinner so that user will atleast have an estimate of how long a search going to take.
    
 ## Built With
 
