@@ -43,7 +43,10 @@ This repo is deployed on Heroku. You can go ahead and deploy it on any cloud str
 ### How it Works?
    * User enters the query in the search and specify the date range then on Submit the application will fire a Restful API with the query and date ranges.
    * If the user didn't specify the date ranges now we have the TO date is assigned as the current date with `new Date()` and for the FROM date we fire an API request which will give us the date of the starting year in database for that search so now that we have got the FROM date we already have the TO date we will fire API for each year with the filter `FIRST_PDATE`.
-   * This application uses the tooltip formatter from Highcharts to display the most cited publication
+   * This application uses the tooltip formatter from Highcharts to display the most cited publication.
+### Future Implementation
+   * Integrate Django's Panda to manipulate the data and get the work done by one API call.
+   * Make some real UI enhancement as this app mainly focuses on functionality.
    
 ## Built With
 
