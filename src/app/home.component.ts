@@ -53,7 +53,7 @@ export class HomeComponent {
 	}
 
 	queryEMC = () => {
-				let hitCount = [] , year = [] , mostCited = {};
+				let hitCount = [] , year = [] , mostCited = {} , totalCount = {};
 		if(this.query.from.getFullYear() == this.query.to.getFullYear()){
 			this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:[${yyyymmdd(this.query.from)} TO ${yyyymmdd(this.query.to)}])`)
 				.subscribe(results => {
@@ -61,7 +61,8 @@ export class HomeComponent {
 					hitCount.push(results.hitCount);
 					year.push(firstPubYear);
 					mostCited[firstPubYear] = results.resultList.result;
-					getHistogram({query : this.query.search , from : this.query.from , to : this.query.to ,mostCited : mostCited, hitCount : hitCount , year : year});
+					totalCount[firstPubYear] = results.hitCount;
+					getHistogram({query : this.query.search , from : this.query.from , to : this.query.to ,mostCited : mostCited, hitCount : hitCount , year : year , totalCount : totalCount});
 					}, error => {
 											this.loading = false;
 											console.log('error' , error);
@@ -79,6 +80,7 @@ export class HomeComponent {
 						hitCount.push(resultsTop.hitCount);
 						year.push(firstPubYear);
 						mostCited[firstPubYear] = resultsTop.resultList.result;
+						totalCount[firstPubYear] = resultsTop.hitCount;
 						}
 						let pubYearStart = this.query.from.getFullYear()+1;
 						async.whilst(
@@ -94,6 +96,7 @@ export class HomeComponent {
 										hitCount.push(resultsYr.hitCount);
 										year.push(firstPubYear);
 										mostCited[firstPubYear] = resultsYr.resultList.result;
+										totalCount[firstPubYear] = resultsYr.hitCount;
 										}
 										pubYearStart++;
 										callback(undefined , pubYearStart);
@@ -110,9 +113,10 @@ export class HomeComponent {
 										hitCount.push(resultsBot.hitCount);
 										year.push(firstPubYear);
 										mostCited[firstPubYear] = resultsBot.resultList.result;
+										totalCount[firstPubYear] = resultsBot.hitCount;
 										}
 										this.loading = false;
-										getHistogram({query : this.query.search , from : this.query.from , to : this.query.to ,mostCited : mostCited, hitCount : hitCount , year : year});
+										getHistogram({query : this.query.search , from : this.query.from , to : this.query.to ,mostCited : mostCited, hitCount : hitCount , year : year , totalCount : totalCount});
 										} , error => {
 											this.loading = false;
 											console.log('error' , error);
@@ -147,6 +151,7 @@ function getHistogram(data){
         formatter: function () {
             return `
             	<h2>${this.x}</h2><br>		
+				<span style="font-weight : bolder;">Total Publications: ${data.totalCount[this.x]}</span><br>
 				<span style="font-weight : bolder;">Most cited: ${data.mostCited[this.x][0].title}</span><br>
 				<span>Cited Count : ${data.mostCited[this.x][0].citedByCount}</span>
             `
