@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Kanit');
+.header {
+  font-family: 'Kanit', sans-serif;
+  min-height: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  width : 100%;
+  color : beige;
+  background : linear-gradient(
+      rgba(0 , 0 , 0 , 0.3),
+      rgba(0 , 0 , 0 , 0.3)
+    ),
+  url('../img/background1.jpg') center  no-repeat fixed;
+  -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+	box-shadow: 0 8px 6px -6px black;
+}
+#high-container {
+	max-width: 90%;
+	min-width: 90%;
+	align-self: center;
+	align-items: center;
+}

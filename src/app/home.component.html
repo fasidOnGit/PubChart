@@ -1,25 +1,57 @@
-<div class="example-container">
-  <mat-form-field [hideRequiredMarker]="false">
-    <input  matInput placeholder="Search.." required [(ngModel)]="query.search">
-  </mat-form-field>
-  <div>
-    <mat-form-field>
-	  <input matInput [matDatepicker]="from"  [(ngModel)]="query.from" [max]="query.to" placeholder="Choose a FROM date">
-	  <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
-	  <mat-datepicker #from></mat-datepicker>
-	  
-	</mat-form-field>
-	 <mat-form-field>
-	  <input matInput [matDatepicker]="to" [(ngModel)]="query.to" [min]="query.from" placeholder="Choose a TO date">
-	  <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
-	  <mat-datepicker #to></mat-datepicker>
-	  
-	</mat-form-field>
- </div>
-			<button (click)="post()" mat-button color="primary">SEARCH</button>
-</div>
+<mat-card class="header">
+  <mat-card-header>
+    <mat-card-title><h1>Search in Europe PMC</h1></mat-card-title>
+    <mat-card-subtitle><p style="color : #fff;">Help yourself with the one of the largest database in bioinformatics..</p></mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+   	<div class="header-container">
+		  <mat-form-field [hideRequiredMarker]="false">
+    	    <mat-placeholder style="color : #fff;">Search..</mat-placeholder>
+		    <input  matInput required [(ngModel)]="query.search">
+		  </mat-form-field>
+		  <div>
+		    <mat-form-field>
+		    	<mat-placeholder style="color : #fff;">Choose a From date</mat-placeholder>
+			  <input matInput [matDatepicker]="from"  [(ngModel)]="query.from" [max]="query.to">
+			  <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+			  <mat-datepicker #from></mat-datepicker>
+			  
+			</mat-form-field>
+			 <mat-form-field>
+	    	  <mat-placeholder style="color : #fff;">Choose a To date</mat-placeholder>
+			  <input matInput [matDatepicker]="to" [(ngModel)]="query.to" [min]="query.from">
+			  <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+			  <mat-datepicker #to></mat-datepicker>
+			    <mat-hint align="end" style="color : #fff;">(Dates are optional)</mat-hint>
+			</mat-form-field>
+			
+			<button  (click)="reset()" *ngIf="(this.query.from || this.query.to) && !loading" mat-button color="accent">RESET</button>	
+		</div>
+		<button (click)="post()" mat-button color="warning">SEARCH</button>
+	</div>
 
-<div id="high-container">
-	<mat-spinner *ngIf="loading"></mat-spinner>
-	<div id="container" style="width:100%; height:400px;"></div>
-</div>
+  </mat-card-content>
+</mat-card>
+	<div id="high-container">
+			<mat-spinner style="margin:0 auto; padding:0" *ngIf="loading"></mat-spinner>
+			<div id="container" style="width : 80%;"></div>
+	</div>
+
+
+
+
+
+
+<!-- <mat-grid-list cols="1"  style="padding:none;" class="header"> -->
+  <!-- <mat-grid-tile gutterSize="16px"> -->
+     
+
+	<!-- </mat-grid-tile>
+	<mat-grid-tile [colspan]="1" [rowspan]="1">
+		<div id="high-container">
+			<mat-spinner *ngIf="loading"></mat-spinner>
+			<div id="container" style="min-width: 100%; "></div>
+		</div>
+	</mat-grid-tile>
+</mat-grid-list>
+ -->

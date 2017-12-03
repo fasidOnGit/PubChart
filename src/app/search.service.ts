@@ -15,30 +15,15 @@ export class SearchService {
 	formatUrl: string = '&format=json&synonym=true&pageSize=1&sort=CITED desc';
 
 	constructor(private http : Http){}
-	queryEPMC(query){
-		console.log(query , 'lol')
-	}
-	search(terms : Observable<string> , cursorMark?){
-		if(cursorMark){
-			console.log('hiyep')
-		return terms.debounceTime(50)
-		.distinctUntilChanged()
-		.switchMap(term => this.searchEntries(term , cursorMark));
-		} else {
-		return terms.debounceTime(400)
-		.distinctUntilChanged()
-		.switchMap(term => this.searchEntries(term));
-		}
-	} 
-
+	
 	searchEntries(term , filter?) {
 		if(filter) {
 			console.log(this.baseUrl+this.queryUrl+term+filter+this.formatUrl)
 		return this.http.get(this.baseUrl+this.queryUrl+term+filter+this.formatUrl).map((res) => res.json());
 	
 		}else {
-			filter = '';
-		return this.http.get(this.baseUrl+this.queryUrl+term+this.formatUrl+filter).map(res => res.json())
+			filter = '&format=json&synonym=true&pageSize=1&sort=PUBDATE asc';
+		return this.http.get(this.baseUrl+this.queryUrl+term+filter).map(res => res.json())
 		}
 	}
 }	

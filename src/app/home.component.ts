@@ -23,16 +23,40 @@ export class HomeComponent {
 		from : null,
 		to : null
 	};
+	reset() {
+		this.query.from = null;
+		this.query.to = null;
+	}
 
 	post() {
 		this.loading = true;
-		let hitCount = [] , year = [] , mostCited = {};
-		this.query.from = (this.query.from) ? this.query.from : new Date('1781-01-01');
 		this.query.to = (this.query.to) ? this.query.to : new Date();
+		if(this.query.from==null){
+			this.searchService.searchEntries(this.query.search)
+				.subscribe(foundStartYear => {
+					if(foundStartYear.hitCount !=0){
+					this.query.from = new Date(foundStartYear.resultList.result[0].firstPublicationDate);
+					this.queryEMC();
+		
+					}
+					else {
+						this.loading=false;
+						this.snackBar.open('There is no Data!!' , 'CLOSE');
+					}
+				} , error => {
+						console.log('error' , error);
+						this.snackBar.open('Error in fetching data!!' , 'CLOSE')
+					})
+		} else {
+			this.queryEMC();
+		}
+	}
+
+	queryEMC = () => {
+				let hitCount = [] , year = [] , mostCited = {};
 		if(this.query.from.getFullYear() == this.query.to.getFullYear()){
 			this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:[${yyyymmdd(this.query.from)} TO ${yyyymmdd(this.query.to)}])`)
 				.subscribe(results => {
-					console.log(results)
 					var firstPubYear =new Date(results.resultList.result[0].firstPublicationDate).getFullYear(); 
 					hitCount.push(results.hitCount);
 					year.push(firstPubYear);
@@ -87,7 +111,6 @@ export class HomeComponent {
 										year.push(firstPubYear);
 										mostCited[firstPubYear] = resultsBot.resultList.result;
 										}
-										console.log(hitCount , year)
 										this.loading = false;
 										getHistogram({query : this.query.search , from : this.query.from , to : this.query.to ,mostCited : mostCited, hitCount : hitCount , year : year});
 										} , error => {
@@ -106,6 +129,8 @@ export class HomeComponent {
 	}
 
 }
+
+
 function getHistogram(data){
 	Highcharts.chart('container', {
     title: {
