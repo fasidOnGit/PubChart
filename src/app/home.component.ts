@@ -16,8 +16,6 @@ var Highcharts = require('highcharts');
 export class HomeComponent {
 
 	results: Object;
-	searchTerms = new Subject<string>();
-	subSearchTerm = new Subject<string>();
 	loading = false;
 	constructor(private searchService : SearchService , public snackBar: MatSnackBar){}
 	query ={
@@ -29,15 +27,16 @@ export class HomeComponent {
 	post() {
 		this.loading = true;
 		let hitCount = [] , year = [] , mostCited = {};
-		this.query.from = (this.query.from) ? this.query.from : new Date('1970-01-01');
+		this.query.from = (this.query.from) ? this.query.from : new Date('1781-01-01');
 		this.query.to = (this.query.to) ? this.query.to : new Date();
 		if(this.query.from.getFullYear() == this.query.to.getFullYear()){
 			this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:[${yyyymmdd(this.query.from)} TO ${yyyymmdd(this.query.to)}])`)
 				.subscribe(results => {
 					console.log(results)
+					var firstPubYear =new Date(results.resultList.result[0].firstPublicationDate).getFullYear(); 
 					hitCount.push(results.hitCount);
-					year.push(results.resultList.result[0].pubYear);
-					mostCited[results.resultList.result[0].pubYear] = results.resultList.result;
+					year.push(firstPubYear);
+					mostCited[firstPubYear] = results.resultList.result;
 					getHistogram({query : this.query.search , from : this.query.from , to : this.query.to ,mostCited : mostCited, hitCount : hitCount , year : year});
 					}, error => {
 											this.loading = false;
@@ -52,9 +51,10 @@ export class HomeComponent {
 				this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:${topRange})`)
 					.subscribe(resultsTop => {
 						if(resultsTop.hitCount !=0) {
+						var firstPubYear =new Date(resultsTop.resultList.result[0].firstPublicationDate).getFullYear(); 
 						hitCount.push(resultsTop.hitCount);
-						year.push(resultsTop.resultList.result[0].pubYear);
-						mostCited[resultsTop.resultList.result[0].pubYear] = resultsTop.resultList.result;
+						year.push(firstPubYear);
+						mostCited[firstPubYear] = resultsTop.resultList.result;
 						}
 						let pubYearStart = this.query.from.getFullYear()+1;
 						async.whilst(
@@ -62,13 +62,14 @@ export class HomeComponent {
 								return pubYearStart < this.query.to.getFullYear()
 							} ,
 							(callback) => {
-								this.searchService.searchEntries(this.query.search , `( PUB_YEAR:${pubYearStart})`)
+								// this.searchService.searchEntries(this.query.search , `( PUB_YEAR:${pubYearStart})`)
+								this.searchService.searchEntries(this.query.search ,  `( FIRST_PDATE:[${pubYearStart}-01-01 TO ${pubYearStart}-12-31])`)
 									.subscribe(resultsYr => {
 										if(resultsYr.hitCount!=0) {
-											// code...
+										var firstPubYear =new Date(resultsYr.resultList.result[0].firstPublicationDate).getFullYear(); 
 										hitCount.push(resultsYr.hitCount);
-										year.push(resultsYr.resultList.result[0].pubYear);
-										mostCited[resultsYr.resultList.result[0].pubYear] = resultsYr.resultList.result;
+										year.push(firstPubYear);
+										mostCited[firstPubYear] = resultsYr.resultList.result;
 										}
 										pubYearStart++;
 										callback(undefined , pubYearStart);
@@ -81,10 +82,10 @@ export class HomeComponent {
 								this.searchService.searchEntries(this.query.search , `( FIRST_PDATE:${botRange})`)
 									.subscribe(resultsBot => {
 										if(resultsBot.hitCount!=0) {
-											// code...
+										var firstPubYear =new Date(resultsBot.resultList.result[0].firstPublicationDate).getFullYear(); 
 										hitCount.push(resultsBot.hitCount);
-										year.push(resultsBot.resultList.result[0].pubYear);
-										mostCited[resultsBot.resultList.result[0].pubYear] = resultsBot.resultList.result;
+										year.push(firstPubYear);
+										mostCited[firstPubYear] = resultsBot.resultList.result;
 										}
 										console.log(hitCount , year)
 										this.loading = false;
